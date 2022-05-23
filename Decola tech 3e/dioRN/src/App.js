@@ -7,14 +7,30 @@ import {
     ,SafeAreaView
     ,StatusBar
     ,Pressable
+    ,Linking
 } from 'react-native';
 
 
 const imageProfileGithub = 'https://avatars.githubusercontent.com/u/48067468?s=400&u=01792f7e5fafec97508262278e65b18253889cd3&v=4';
+
 const textColor = '#c9d1d9';
 const colorGithub = '#010409';
 const buttonColor = '#238639';
+
+const urlGithub = 'https://github.com/Alansidney';
+
+
 const App = () => {
+
+    const handlePressGithub = async () => {
+        console.log('Trying to validate URL...');
+        const res = await Linking.canOpenURL(urlGithub);
+        if(res){
+            console.log('URL valid, opening URL...');
+            await Linking.openURL(urlGithub);
+        }
+
+    };
     return (
     <SafeAreaView style={style.container}>
         <StatusBar backgroundColor={colorGithub} barStyle="light-content"/>
@@ -29,7 +45,7 @@ const App = () => {
                     💞️ I’m looking to collaborate on projects that envolves data science.
             </Text>
         </View>
-        <Pressable onPress={() => console.log('gitHub!')}>
+        <Pressable onPress={handlePressGithub}>
             <View style={style.button}>
                 <Text style={[style.defaultText, style.textButton]}>Go to Github</Text>
             </View>

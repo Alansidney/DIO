@@ -1,13 +1,30 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import Torch from 'react-native-torch';
+import RNShake from 'react-native-shake'
 import lightOff from './assets/icons/eco-light-off.png';
 import lightOn from './assets/icons/eco-light.png';
 import logoDioOff from './assets/icons/logo-dio-white.png';
 import logoDioOn from './assets/icons/logo-dio.png';
 const App = () =>{
+
   const [lightMode,setLightMode] = useState(false);
 
   const handleChangeMode = () => setLightMode((oldLightMode)=>!oldLightMode);
+
+  useEffect(() => {
+    //LanternOn
+    Torch.switchState(lightMode);
+    console.log('Trocou o estado da lanterna!');
+  },[lightMode]);
+
+  useEffect(()=>{
+    const subscription = RNShake.addListener(() => {
+      setLightMode((oldLightMode)=>!oldLightMode);
+    })
+    //Quando o componente for desmontado...
+    return () => subscription.remove();
+  },[]);
 
   return <View style={lightMode ? style.containerLight : style.container}>
     <TouchableOpacity onPress = {handleChangeMode}>
